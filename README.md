@@ -1,4 +1,4 @@
-# <img src='https://rawgithub.com/FortAwesome/Font-Awesome/master/advanced-options/raw-svg/solid/music.svg' card_color='#113AF1' width='50' height='50' style='vertical-align:bottom'/> sound tuning
+# <img src='https://rawgithub.com/FortAwesome/Font-Awesome/master/advanced-options/raw-svg/solid/music.svg' card_color='#113AF1' width='50' height='50' style='vertical-align:bottom'/> Sound tuning
 This skill plays a sound in the given note.
 
 ## About
