@@ -1,15 +1,26 @@
-## Sound Tuner
-This skill plays a sound in the given tune. this cn be used to tune instruments.
+# <img src='https://rawgithub.com/FortAwesome/Font-Awesome/master/advanced-options/raw-svg/solid/music.svg' card_color='#113AF1' width='50' height='50' style='vertical-align:bottom'/> sound tuning
+This skill plays a sound in the given note.
 
-## Description
+## About
+This skill plays a sound in the given note. This can be used to tune a musical instruments.
 
 
 ## Examples
- - "Play e sound"
- - "Gime me an a sound"
+ - "Gime me an C"
 
 
 ## Credits
-Andreas Lorensen
+Andreas Lorensen (@andlo)
+
+
+## Supported Devices
+platform_mark1 platform_mark2 platform_picroft platform_plasmoid
+
+## Category
+**Information**
+
+## Tags
+#sound
+#tuner
 
 
