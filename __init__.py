@@ -56,9 +56,6 @@ class SoundTuner(MycroftSkill):
         os.remove('sound.wav')
 
 
-
-
-
 def create_skill():
     return SoundTuner()
 
