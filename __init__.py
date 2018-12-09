@@ -123,21 +123,23 @@ class SoundTuner(MycroftSkill):
     @intent_file_handler('tuner.sound.intent')
     def handle_tuner_sound(self, message):
         response = {'note': message.data.get("note")}
-        if self.NOTES[message.data.get("note")]:
-            self.speak_dialog('tuner.sound', data=response, wait=True)
-            self.make_sound(message.data.get("note"))
-        else:
-            self.speak_dialog('can_not_do.sound', data=response, wait=False)
+        try:
+            if self.NOTES[message.data.get("note")]:
+                self.speak_dialog('tuner.sound', data=response, wait=False)
+                self.make_sound(message.data.get("note"))
+        except Exception:
+            self.speak_dialog('can_not_do', data=response, wait=False)
 
     @intent_file_handler('guitar.intent')
     def handle_guitar(self, message):
         response = {'string': message.data.get("string")}
-        if self.GUITAR[message.data.get("string")]:
-            self.speak_dialog('guitar', data=response, wait=True)
-            string = self.GUITAR[message.data.get("string")]
-            self.make_sound(string)
-        else:
-            self.speak_dialog('can_not_do.sound', data=response, wait=False)
+        try:
+            if self.GUITAR[message.data.get("string")]:
+                self.speak_dialog('guitar', data=response, wait=False)
+                string = self.GUITAR[message.data.get("string")]
+                self.make_sound(string)
+        except Exception:
+            self.speak_dialog('can_not_do', data=response, wait=False)
 
     def make_sound(self, note):
         sampleRate = 48000.0  # hertz
@@ -162,4 +164,3 @@ class SoundTuner(MycroftSkill):
 
 def create_skill():
     return SoundTuner()
-
