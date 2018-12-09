@@ -85,7 +85,31 @@ class SoundTuner(MycroftSkill):
                       'G#4': 415.3,
                       'A4': 440.0,
                       'A#4': 466.2,
-                      'B4': 493.9
+                      'B4': 493.9,
+                      'C5': 523.3,
+                      'C#5': 554.4,
+                      'D5': 587.3,
+                      'D#5': 622.3,
+                      'E5':	659.3,
+                      'F5':	698.5,
+                      'F#5': 740.0,
+                      'G5':	784.0,
+                      'G#5': 830.6,
+                      'A5':	880.0,
+                      'A#5': 932.3,
+                      'B5':	987.8,
+                      'C6': 1047,
+                      'C#6': 1109,
+                      'D6': 1175,
+                      'D#6': 1245,
+                      'E6': 1319,
+                      'F6':	1397,
+                      'F#6': 1480,
+                      'G6':	1568,
+                      'G#6': 1661,
+                      'A6': 1760,
+                      'A#6': 1865,
+                      'B6':	1976
                       }
 
         self.GUITAR = {'Low E': 'E2',
@@ -114,7 +138,6 @@ class SoundTuner(MycroftSkill):
             self.make_sound(string)
         else:
             self.speak_dialog('can_not_do.sound', data=response, wait=False)
-
 
     def make_sound(self, note):
         sampleRate = 48000.0  # hertz
