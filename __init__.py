@@ -20,7 +20,7 @@ class SoundTuner(MycroftSkill):
         # from a4, which has a frequency of 440Hz, and is our reference note.
         freq   = lambda n: int(440*(math.pow(2,1/12)**n))
         # a dictionnary associating note frequencies to note names
-        self.NOTES = {name(n): freq(n) for n in range(-42,60)}
+        self.NOTES = {name(n): freq(n) for n in range(-42, 60)}
 
         self.GUITAR = {'Low E': 'E2',
                        'A': 'A2',

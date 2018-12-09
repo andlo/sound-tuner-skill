@@ -1,4 +1,4 @@
-# <img src='https://rawgithub.com/FortAwesome/Font-Awesome/master/advanced-options/raw-svg/solid/music.svg' card_color='#113AF1' width='50' height='50' style='vertical-align:bottom'/> Sound tuner
+# <img src='g-key.png' card_color='#113AF1' width='50' height='50' style='vertical-align:bottom'/> Sound tuner
 This skill plays a sound in the given note or an sound in the given guitar string.
 
 ## About
