@@ -33,11 +33,13 @@ class SoundTuner(MycroftSkill):
     @intent_file_handler('tuner.sound.intent')
     def handle_tuner_sound(self, message):
         response = {'note': message.data.get("note")}
-        try:
-            if self.NOTES[message.data.get("note")]:
-                self.speak_dialog('tuner.sound', data=response, wait=False)
-                self.make_sound(message.data.get("note"))
-        except Exception:
+        if self.NOTES.get(message.data.get("note")):
+            self.speak_dialog('tuner.sound', data=response, wait=False)
+            self.make_sound(message.data.get("note"))
+        elif self.NOTES.get(message.data.get("note") + '4'):
+            self.speak_dialog('tuner.sound', data=response, wait=False)
+            self.make_sound(message.data.get("note") + '4')
+        else:
             self.speak_dialog('can_not_do', data=response, wait=False)
 
     @intent_file_handler('guitar.intent')
