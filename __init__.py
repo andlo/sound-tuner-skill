@@ -113,11 +113,11 @@ class SoundTuner(MycroftSkill):
                       }
 
         self.GUITAR = {'Low E': 'E2',
-                       'A': 'A3',
-                       'D': 'D4',
-                       'G': 'G4',
-                       'B': 'B4',
-                       'High E': 'E5'
+                       'A': 'A2',
+                       'D': 'D3',
+                       'G': 'G3',
+                       'B': 'B3',
+                       'High E': 'E4'
                        }
 
     @intent_file_handler('tuner.sound.intent')
