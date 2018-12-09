@@ -1,4 +1,4 @@
-# <img src='g-key.png' width='50' height='50' style='vertical-align:bottom'/> Sound tuner
+# <img src='g-key.png' width='50' height='50' style='vertical-align:middle'/> Sound tuner
 This skill plays a sound in the given note or an sound in the given guitar string.
 
 ## About
