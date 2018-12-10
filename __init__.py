@@ -15,39 +15,41 @@ class SoundTuner(MycroftSkill):
         labels = ['A','A#','B','C','C#','D','D#','E','F','E#','G','G#']
         # name is the complete name of a note (label + octave). the parameter
         # n is the number of half-tone from A4 (e.g. D#1 is -42, A3 is -12, A5 is 12)
-        name   = lambda n: labels[n%len(labels)] + str(int((n+(9+4*12))/12))
+        name = lambda n: labels[n%len(labels)] + str(int((n+(9+4*12))/12))
         # the frequency of a note. the parameter n is the number of half-tones
         # from a4, which has a frequency of 440Hz, and is our reference note.
         freq   = lambda n: int(440*(math.pow(2,1/12)**n))
         # a dictionnary associating note frequencies to note names
         self.NOTES = {name(n): freq(n) for n in range(-42, 60)}
 
-        self.GUITAR = {'Low E': 'E2',
+        self.GUITAR = {'LOW E': 'E2',
                        'A': 'A2',
                        'D': 'D3',
                        'G': 'G3',
                        'B': 'B3',
-                       'High E': 'E4'
+                       'HIGH E': 'E4'
                        }
 
     @intent_file_handler('tuner.sound.intent')
     def handle_tuner_sound(self, message):
-        response = {'note': message.data.get("note")}
-        if self.NOTES.get(message.data.get("note")):
+        message = str.upper(message.data.get("note"))
+        response = {'note': message}
+        if self.NOTES.get(message):
             self.speak_dialog('tuner.sound', data=response, wait=False)
-            self.make_sound(message.data.get("note"))
-        elif self.NOTES.get(message.data.get("note") + '4'):
+            self.make_sound(message)
+        elif self.NOTES.get(message + '4'):
             self.speak_dialog('tuner.sound', data=response, wait=False)
-            self.make_sound(message.data.get("note") + '4')
+            self.make_sound(message + '4')
         else:
             self.speak_dialog('can_not_do', data=response, wait=False)
 
     @intent_file_handler('guitar.intent')
     def handle_guitar(self, message):
-        response = {'string': message.data.get("string")}
-        if self.GUITAR.get(message.data.get("string")):
+        message = str.upper(message.data.get("string"))
+        response = {'string': message}
+        if self.GUITAR.get(message):
             self.speak_dialog('guitar', data=response, wait=False)
-            string = self.GUITAR[message.data.get("string")]
+            string = self.GUITAR[message]
             self.make_sound(string)
         else:
             self.speak_dialog('can_not_do', data=response, wait=False)
@@ -57,7 +59,7 @@ class SoundTuner(MycroftSkill):
         duration = 2.0
         frequency = self.NOTES[note]
 
-        wavef = wave.open('sound.wav', 'w')
+        wavef = wave.open('/tmp/sound.wav', 'w')
         wavef.setnchannels(1)  # mono
         wavef.setsampwidth(2)
         wavef.setframerate(sampleRate)
@@ -68,9 +70,9 @@ class SoundTuner(MycroftSkill):
             wavef.writeframesraw(data)
 
         wavef.close()
-        play_wav('sound.wav')
+        play_wav('/tmp/sound.wav')
         time.sleep(duration)
-        os.remove('sound.wav')
+        os.remove('/tmp/sound.wav')
 
 
 def create_skill():
