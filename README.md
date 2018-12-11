@@ -19,7 +19,15 @@ people call middle C for "C3" or even for "C5".
  - "Gime me an C note"
  - "Give me an guitar Low E string"
  - "Give me an A4 note"
- - "Give me an guitar A string"
+ - "Give me an violin A string"
+
+Mycroft knows the strings on these instruments:
+ - guitar
+ - mandolin
+ - cello
+ - viola
+ - banjo
+ - bass
 
 
 ## Credits
