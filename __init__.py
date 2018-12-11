@@ -12,6 +12,9 @@ class SoundTuner(MycroftSkill):
         MycroftSkill.__init__(self)
 
     def initialize(self):
+        self.register_entity_file("instrument.entity")
+        self.register_entity_file("string.entity")
+
         labels = ['A','A#','B','C','C#','D','D#','E','F','E#','G','G#']
         # name is the complete name of a note (label + octave). the parameter
         # n is the number of half-tone from A4 (e.g. D#1 is -42, A3 is -12, A5 is 12)
@@ -28,13 +31,6 @@ class SoundTuner(MycroftSkill):
         # Viola & tenor banjo strings are C3=130.8Hz, G3=196Hz, D4=293.7Hz, A4=440Hz
         # Cello strings are C2=65.41Hz, G2=98Hz, D3=146.8Hz, A3=220Hz
 
-        self.GUITAR = {'LOW E': 'E2',
-                       'A': 'A2',
-                       'D': 'D3',
-                       'G': 'G3',
-                       'B': 'B3',
-                       'HIGH E': 'E4'
-                       }
         self.INSTRUMENT = {
             'guitar': {'LOW E': 'E2', 'A': 'A2', 'D': 'D3', 'G': 'G3','B': 'B3', 'HIGH E': 'E4'},
             'mandolin': {'G': 'G3', 'D': 'D4', 'A': 'A4', 'E': 'E5'},
@@ -61,14 +57,15 @@ class SoundTuner(MycroftSkill):
     @intent_file_handler('instrument.intent')
     def handle_instrument(self, message):
         instrument = message.data.get('instrument')
-        string = str.upper(message.data.get('string'))
+        string = message.data.get('string')
+        string_lookup = str.upper(string)
         response = {'instrument': instrument, 'string': string}
         self.log.info(message)
         self.log.info(instrument)
-        self.log.info(string)
+        self.log.info(string_lookup)
 
-        if string in self.INSTRUMENT[instrument]:
-            note = self.INSTRUMENT[instrument][string]
+        if string_lookup in self.INSTRUMENT[instrument]:
+            note = self.INSTRUMENT[instrument][string_lookup]
             self.speak_dialog('instrument', data=response, wait=False)
             self.make_sound(note)
         else:

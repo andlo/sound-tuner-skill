@@ -1,2 +1,3 @@
-Give me an {instrument} {string} string.
-Give me an {string} string on an {instrument}
+Give me an {instrument} {string} string
+Give me an {instrument} {string}
+Give me an {string} (string) on (a|an) {instrument}
