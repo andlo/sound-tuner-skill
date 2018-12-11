@@ -36,13 +36,13 @@ class SoundTuner(MycroftSkill):
                        'HIGH E': 'E4'
                        }
         self.INSTRUMENT = {
-            'GUITAR': {'LOW E': 'E2', 'A': 'A2', 'D': 'D3', 'G': 'G3','B': 'B3', 'HIGH E': 'E4'},
-            'MANDOLIN': {'G': 'G3', 'D': 'D4', 'A': 'A4', 'E': 'E5'},
-            'VIOLIN': {'G': 'G3', 'D': 'D4', 'A': 'A4', 'E': 'E5'},
-            'CELLO': {'C': 'C2', 'G': 'G2', 'D': 'D3', 'A': 'A3'},
-            'VIOLA': {'C': 'C3', 'G': 'G3', 'D': 'D4', 'A': 'A4'},
-            'BANJO': {'C': 'C3', 'G': 'G3', 'D': 'D4', 'A': 'A4'},
-            'BASS': {'B': 'B0', 'E': 'E1', 'A': 'A1', 'D': 'D2', 'G': 'G2'}}
+            'guitar': {'LOW E': 'E2', 'A': 'A2', 'D': 'D3', 'G': 'G3','B': 'B3', 'HIGH E': 'E4'},
+            'mandolin': {'G': 'G3', 'D': 'D4', 'A': 'A4', 'E': 'E5'},
+            'violin': {'G': 'G3', 'D': 'D4', 'A': 'A4', 'E': 'E5'},
+            'cello': {'C': 'C2', 'G': 'G2', 'D': 'D3', 'A': 'A3'},
+            'viola': {'C': 'C3', 'G': 'G3', 'D': 'D4', 'A': 'A4'},
+            'banjo': {'C': 'C3', 'G': 'G3', 'D': 'D4', 'A': 'A4'},
+            'bass': {'B': 'B0', 'E': 'E1', 'A': 'A1', 'D': 'D2', 'G': 'G2'}}
 
 
     @intent_file_handler('tuner.sound.intent')
@@ -60,18 +60,17 @@ class SoundTuner(MycroftSkill):
 
     @intent_file_handler('instrument.intent')
     def handle_instrument(self, message):
-        instrument = str.upper(message.data.get("instrument"))
-        string = str.upper(message.data.get("string"))
+        instrument = message.data.get('instrument')
+        string = str.upper(message.data.get('string'))
         response = {'instrument': instrument, 'string': string}
+        self.log.info(message)
+        self.log.info(instrument)
+        self.log.info(string)
 
-        if self.INSTRUMENT.get(instrument):
-            instrument2 = self.INSTRUMENT.get(instrument)
-            if instrument2.get(string):
-                self.speak_dialog('instrument', data=response, wait=False)
-                string2 = instrument2[string]
-                self.make_sound(string2)
-            else:
-                self.speak_dialog('can_not_do_instrument', data=response, wait=False)
+        if string in self.INSTRUMENT[instrument]:
+            note = self.INSTRUMENT[instrument][string]
+            self.speak_dialog('instrument', data=response, wait=False)
+            self.make_sound(note)
         else:
             self.speak_dialog('can_not_do_instrument', data=response, wait=False)
 
