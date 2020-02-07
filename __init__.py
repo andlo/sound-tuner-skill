@@ -1,11 +1,12 @@
 from mycroft import MycroftSkill, intent_file_handler
-from mycroft.util import play_wav
+# from mycroft.util import play_wav
+from mycroft.skills.audioservice import AudioService
 import os
 import wave
 import struct
 import math
 import time
-
+#test
 
 class SoundTuner(MycroftSkill):
     def __init__(self):
@@ -15,13 +16,14 @@ class SoundTuner(MycroftSkill):
         self.register_entity_file("instrument.entity")
         self.register_entity_file("string.entity")
 
-        labels = ['A','A#','B','C','C#','D','D#','E','F','E#','G','G#']
+        labels = ['A', 'A#', 'B', 'C', 'C#', 
+                  'D', 'D#', 'E', 'F', 'E#', 'G', 'G#']
         # name is the complete name of a note (label + octave). the parameter
         # n is the number of half-tone from A4 (e.g. D#1 is -42, A3 is -12, A5 is 12)
-        name = lambda n: labels[n%len(labels)] + str(int((n+(9+4*12))/12))
+        def name(n): return labels[n % len(labels)] + str(int((n+(9+4*12))/12))
         # the frequency of a note. the parameter n is the number of half-tones
         # from a4, which has a frequency of 440Hz, and is our reference note.
-        freq   = lambda n: int(440*(math.pow(2,1/12)**n))
+        def freq(n): return int(440*(math.pow(2, 1/12)**n))
         # a dictionnary associating note frequencies to note names
         self.NOTES = {name(n): freq(n) for n in range(-42, 60)}
 
@@ -32,7 +34,7 @@ class SoundTuner(MycroftSkill):
         # Cello strings are C2=65.41Hz, G2=98Hz, D3=146.8Hz, A3=220Hz
 
         self.INSTRUMENT = {
-            'guitar': {'LOW E': 'E2', 'A': 'A2', 'D': 'D3', 'G': 'G3','B': 'B3', 'HIGH E': 'E4'},
+            'guitar': {'LOW E': 'E2', 'A': 'A2', 'D': 'D3', 'G': 'G3', 'B': 'B3', 'HIGH E': 'E4'},
             'mandolin': {'G': 'G3', 'D': 'D4', 'A': 'A4', 'E': 'E5'},
             'violin': {'G': 'G3', 'D': 'D4', 'A': 'A4', 'E': 'E5'},
             'cello': {'C': 'C2', 'G': 'G2', 'D': 'D3', 'A': 'A3'},
@@ -40,19 +42,18 @@ class SoundTuner(MycroftSkill):
             'banjo': {'C': 'C3', 'G': 'G3', 'D': 'D4', 'A': 'A4'},
             'bass': {'B': 'B0', 'E': 'E1', 'A': 'A1', 'D': 'D2', 'G': 'G2'}}
 
-
     @intent_file_handler('tuner.sound.intent')
     def handle_tuner_sound(self, message):
         message = str.upper(message.data.get("note"))
         response = {'note': message}
         if self.NOTES.get(message):
-            self.speak_dialog('tuner.sound', data=response, wait=False)
+            self.speak_dialog('tuner.sound', data=response, wait=True)
             self.make_sound(message)
         elif self.NOTES.get(message + '4'):
-            self.speak_dialog('tuner.sound', data=response, wait=False)
+            self.speak_dialog('tuner.sound', data=response, wait=True)
             self.make_sound(message + '4')
         else:
-            self.speak_dialog('can_not_do', data=response, wait=False)
+            self.speak_dialog('can_not_do', data=response, wait=True)
 
     @intent_file_handler('instrument.intent')
     def handle_instrument(self, message):
@@ -66,10 +67,11 @@ class SoundTuner(MycroftSkill):
 
         if string_lookup in self.INSTRUMENT[instrument]:
             note = self.INSTRUMENT[instrument][string_lookup]
-            self.speak_dialog('instrument', data=response, wait=False)
+            self.speak_dialog('instrument', data=response, wait=True)
             self.make_sound(note)
         else:
-            self.speak_dialog('can_not_do_instrument', data=response, wait=False)
+            self.speak_dialog('can_not_do_instrument',
+                              data=response, wait=True)
 
     def make_sound(self, note):
         sampleRate = 48000.0  # hertz
@@ -82,12 +84,13 @@ class SoundTuner(MycroftSkill):
         wavef.setframerate(sampleRate)
 
         for i in range(int(duration * sampleRate)):
-            value = int(32767.0*math.cos(frequency*math.pi*float(i)/float(sampleRate)))
+            value = int(32767.0*math.cos(frequency *
+                                         math.pi*float(i)/float(sampleRate)))
             data = struct.pack('<h', value)
             wavef.writeframesraw(data)
 
         wavef.close()
-        play_wav('/tmp/sound.wav')
+        AudioService.play(self, tracks='file:///tmp/sound.wav')
         time.sleep(duration)
         os.remove('/tmp/sound.wav')
 
